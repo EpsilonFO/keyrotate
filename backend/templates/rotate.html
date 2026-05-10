@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rotate {{ key.name }} — KeyRotate</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #1d3a8a;
+      --blue-dark: #15296a;
+      --terracotta: #c75d3a;
+      --ink: #1a1a1a;
+      --muted: #666;
+      --bg: #f8f5ef;
+      --card: #fffdf8;
+      --border: #e6e0d3;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: var(--bg); color: var(--ink); font-family: Inter, system-ui, sans-serif; }
+    .wrap { max-width: 560px; margin: 8vh auto; padding: 0 24px; }
+    .card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 40px; }
+    h1 { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; font-size: 36px; margin: 0 0 8px; color: var(--blue); letter-spacing: -0.5px; }
+    .sub { color: var(--muted); margin: 0 0 28px; font-size: 15px; }
+    .meta { background: #f3eee3; border-radius: 8px; padding: 16px 20px; margin-bottom: 28px; font-size: 14px; }
+    .meta strong { color: var(--blue); }
+    label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+    input[type="date"] {
+      width: 100%; padding: 12px 14px; font-size: 16px; border: 1px solid var(--border);
+      border-radius: 8px; background: #fff; font-family: inherit;
+    }
+    input[type="date"]:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 3px rgba(29, 58, 138, 0.15); }
+    button {
+      margin-top: 20px; width: 100%; padding: 14px; font-size: 16px; font-weight: 500;
+      background: var(--blue); color: #fff; border: none; border-radius: 8px; cursor: pointer;
+      font-family: inherit; transition: background 0.4s ease;
+    }
+    button:hover { background: var(--blue-dark); }
+    .hint { color: var(--muted); font-size: 13px; margin-top: 12px; line-height: 1.5; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card">
+      <h1>Confirm rotation</h1>
+      <p class="sub">Set the new expiration date for this key.</p>
+      <div class="meta">
+        <div><strong>{{ provider_name }}</strong> · {{ key.name }}</div>
+      </div>
+      <form method="post" action="/rotate/{{ token }}">
+        <label for="new_expires_at">New expiration date</label>
+        <input type="date" id="new_expires_at" name="new_expires_at" value="{{ suggested_date }}" required />
+        <button type="submit">Mark as rotated</button>
+        <p class="hint">After saving, your reminder schedule resets and you'll be notified again as the new date approaches.</p>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
