@@ -81,22 +81,11 @@ You can also rotate from the dashboard by clicking "Rotated" on a key row.
 
 ## Deployment
 
-Backend can run anywhere Python runs. Recommended:
+The project ships with a full Docker setup (backend + frontend build + internal nginx) that fits behind any existing reverse proxy. See [DEPLOY.md](./DEPLOY.md) for a step-by-step guide to deploying on a server with an existing nginx (the example walks through wiring it under a subdomain via a shared Docker network).
 
-```bash
-# On your server
-uv sync
-uv run uvicorn main:app --host 0.0.0.0 --port 8000
-```
-
-Behind nginx, route:
-
-- `/api/*` and `/rotate/*` → backend (port 8000)
-- everything else → static frontend build (`cd frontend && npm run build`, serve `dist/`)
+For simpler hosts (Railway, Fly.io, Render): the `docker-compose.yml` works out of the box if you adjust the `web` network to be internal or remove the nginx service and expose the backend directly.
 
 Set `APP_BASE_URL` and `BACKEND_BASE_URL` in `backend/.env` to your real URLs so email links point to the right place.
-
-For cheap hosting: Railway, Fly.io, Render, or a small VPS. Everything fits in 256MB RAM.
 
 ## File layout
 

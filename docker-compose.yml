@@ -1,0 +1,43 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: keyrotate-backend
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend:/app
+    networks:
+      - internal
+    restart: unless-stopped
+
+  frontend-build:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: keyrotate-frontend-build
+    volumes:
+      - frontend_dist:/dist
+
+  nginx:
+    image: nginx:alpine
+    container_name: keyrotate-nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - frontend_dist:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
+      - frontend-build
+    networks:
+      - internal
+      - web
+    restart: unless-stopped
+
+volumes:
+  frontend_dist:
+
+networks:
+  internal:
+  web:
+    external: true
